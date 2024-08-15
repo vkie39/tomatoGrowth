@@ -35,6 +35,6 @@ def process_folder_images(input_folder, output_folder):
             except Exception as e:
                 print(f"파일 {file_name} 처리 중 오류 발생: {e}")
 
-input_folder = 'Riped and Unriped tomato Dataset\Images'   
-output_folder = 'output\output2' 
+input_folder = 'dataset\Images'   
+output_folder = 'output\output_sci' 
 process_folder_images(input_folder, output_folder)

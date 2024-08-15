@@ -1,5 +1,4 @@
 import os
-
 import cv2
 
 def process_folder_images(input_folder, output_folder):
@@ -26,6 +25,6 @@ def process_folder_images(input_folder, output_folder):
             except Exception as e:
                 print(f"파일 {file_name} 처리 중 오류 발생: {e}")
 
-input_folder = 'Riped and Unriped tomato Dataset\Images' 
+input_folder = 'dataset\Images'
 output_folder = 'output\output_cv2' 
 process_folder_images(input_folder, output_folder)

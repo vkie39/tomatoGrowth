@@ -6,3 +6,10 @@ how to check tomato growth using YOLO v5
 - [ ] Model training
 - [ ] Optimization
 - [ ] App development
+  
+# Environment Setup
+
+Install requirements
+```bash
+
+```
