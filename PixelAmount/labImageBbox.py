@@ -6,7 +6,6 @@ import matplotlib.pyplot as plt
 image = cv2.imread('sampleImage/sample1.jpeg')
 lab_image = cv2.cvtColor(image, cv2.COLOR_BGR2LAB)  # OpenCV는 기본적으로 BGR이므로 LAB로 변환
 
-
 # Detection 후 BBOX 출력 Code 작성
 detections = [
     # 예시 바운딩 박스 (x1, y1, x2, y2)
@@ -61,7 +60,6 @@ for detection in detections:
     print("red_area = ", red_area)
     print("green_area = ", green_area)
     print("remain_area = ", remain_area)
-
 
 plt.imshow(lab_image)
 plt.show()
