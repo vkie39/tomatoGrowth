@@ -1,6 +1,7 @@
 import torch
 import cv2
 import numpy as np
+from PixelAmount.PixelCalculator import pixelDetector
 
 # YOLOv5 모델 로드
 model = torch.hub.load('./yolov5', 'custom', './final_model/best.pt', source='local')
@@ -32,14 +33,22 @@ while cap.isOpened():
     for box in detections:
         left, top, right, bottom = map(int, [box[0] - box[2] / 2, box[1] - box[3] / 2,
                                                box[0] + box[2] / 2, box[1] + box[3] / 2])
+        
+        cropped_img = lab[top: bottom, left: right]
+        level = pixelDetector(cropped_img)
 
         cv2.rectangle(frame, (left, top), (right, bottom), (0, 255, 0), 2)  # Draw bounding box
         cv2.putText(frame, f'{results.names[int(box[5])]} {int(100 * box[4])}%',
+                    (left, top - 40 if top > 40 else top + 40), cv2.FONT_HERSHEY_SIMPLEX,
+                    0.8, (255, 255, 255), 2)  # Draw label
+        cv2.putText(frame, f'Ratio:{level[0]:.2f} LEVEL:{level[1]}',
                     (left, top - 10 if top > 10 else top + 10), cv2.FONT_HERSHEY_SIMPLEX,
                     0.8, (255, 255, 255), 2)  # Draw label
+        
+        
 
     # OpenCV 윈도우에 이미지를 표시
-    cv2.imshow('YOLORunner.py', frame)
+    cv2.imshow('tomato growth detector', frame)
 
     # 'q' 키를 누르면 종료
     if cv2.waitKey(1) & 0xFF == ord('q'):

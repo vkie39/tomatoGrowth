@@ -30,7 +30,7 @@ for detection in detections:
     height, width = A.shape
     for i in range(height):
         for j in range(width):
-            print(A[i,j])
+            # print(A[i,j])
             if A[i, j] > 150:  # A 값이 양수인 경우 빨간색
                 red_area += 1
             elif A[i, j] < 110:  # A 값이 음수인 경우 초록색
@@ -38,6 +38,11 @@ for detection in detections:
             else:
                 remain_area += 1
 
+    red_area_sum = np.sum(A > 150)
+    green_area_sum = np.sum(A < 110)
+    remain_area_sum = A.size - red_area - green_area
+
+    print(f"R:{red_area_sum},G:{green_area_sum},REMAIN:{remain_area_sum}")
 
     # 면적 비율 계산
     total_area = height * width
@@ -60,6 +65,18 @@ for detection in detections:
     print("red_area = ", red_area)
     print("green_area = ", green_area)
     print("remain_area = ", remain_area)
+    
+    growth_ratio = (red_area / (red_area + green_area)) * 100
+
+    print(f"Ratio: {growth_ratio:.2f}%, Growth Level: ",end='')
+    if growth_ratio <= 25:
+        print(1)
+    elif growth_ratio <= 50:
+        print(2)
+    elif growth_ratio <= 75:
+        print(3)
+    else:
+        print(4)
 
 plt.imshow(lab_image)
 plt.show()

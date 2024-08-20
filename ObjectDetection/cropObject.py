@@ -1,6 +1,7 @@
 import torch
 import cv2
 import numpy as np
+from PixelAmount.PixelCalculator import pixelDetector
 
 # YOLOv5 모델 로드
 model = torch.hub.load('./yolov5', 'custom', './final_model/best.pt', source='local')
@@ -37,6 +38,7 @@ while cap.isOpened():
         cv2.putText(frame, f'{results.names[int(box[5])]} {int(100 * box[4])}%',
                     (left, top - 10 if top > 10 else top + 10), cv2.FONT_HERSHEY_SIMPLEX,
                     0.8, (255, 255, 255), 2)  # Draw label
+        cropped_img = frame[top: bottom, left: right]
 
     # OpenCV 윈도우에 이미지를 표시
     cv2.imshow('YOLORunner.py', frame)

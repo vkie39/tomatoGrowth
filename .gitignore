@@ -2,3 +2,5 @@
 /dataset
 /output
 /yolov5
+/ObjectDetection/croppedImage
+/PixelAmount/__pycache__
