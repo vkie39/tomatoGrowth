@@ -3,8 +3,10 @@ import cv2
 import numpy as np
 from PixelAmount.PixelCalculator import pixelDetector
 
+level_array = ['50days more', ' 30days more', 'export tomato', 'domestic tomato']
+
 # YOLOv5 모델 로드
-model = torch.hub.load('./yolov5', 'custom', './final_model/best.pt', source='local')
+model = torch.hub.load('yolov5', 'custom', 'final_model/best.pt', source='local')
 model.conf = 0.02
 model.max_det = 4
 
@@ -45,6 +47,8 @@ while cap.isOpened():
                     (left, top - 10 if top > 10 else top + 10), cv2.FONT_HERSHEY_SIMPLEX,
                     0.8, (255, 255, 255), 2)  # Draw label
         
+
+  
         
 
     # OpenCV 윈도우에 이미지를 표시
