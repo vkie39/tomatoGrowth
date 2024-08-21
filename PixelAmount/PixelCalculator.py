@@ -9,8 +9,8 @@ def pixelDetector(img):
     _, A, _ = cv2.split(roi)
 
     # 빨간색과 초록색 픽셀 개수 초기화
-    red_area = np.nansum(A > 128+21)
-    green_area = np.nansum(A < 128-10)
+    red_area = np.nansum(A > 128+14)   #128+21 
+    green_area = np.nansum(A < 128-6) #128-10
     if np.isnan(red_area): red_area = 0
     if np.isnan(green_area): green_area = 0
     red_area = int(red_area)
@@ -29,13 +29,13 @@ def pixelDetector(img):
         growth_ratio = (red_area / (red_area + green_area)) * 100
     else:
         growth_ratio = -1
-    if growth_ratio <= 25:
+    if growth_ratio <= 5:    #25
         growth_level = 1
-    elif growth_ratio <= 50:
+    elif growth_ratio <= 35: #50
         growth_level = 2
-    elif growth_ratio <= 75:
+    elif growth_ratio <= 75: 
         growth_level = 3
-    else:
+    elif growth_ratio >75:   #else:
         growth_level = 4
     
     return [growth_ratio, growth_level]

@@ -2,16 +2,23 @@ import torch
 import cv2
 import numpy as np
 from PixelAmount.PixelCalculator import pixelDetector
+import pathlib
 
-level_array = ['50days more', ' 30days more', 'export tomato', 'domestic tomato']
+#윈도우 파일시스템 경로를 사용하기 위해 추가
+pathlib.PosixPath = pathlib.WindowsPath
+
 
 # YOLOv5 모델 로드
-model = torch.hub.load('yolov5', 'custom', 'final_model/best.pt', source='local')
+model = torch.hub.load('./yolov5', 'custom', 'final_model/best.pt', source='local')
 model.conf = 0.02
 model.max_det = 4
 
 # 웹캠 스트림 열기
 cap = cv2.VideoCapture(0)  # 0은 기본 웹캠을 의미
+
+# 프레임 크기 설정 추가
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 1280)  # 너비
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 720)  # 높이
 
 if not cap.isOpened():
     print("카메라를 열 수 없습니다.")
@@ -19,6 +26,12 @@ else:
     print("카메라가 성공적으로 열렸습니다.")
 
 while cap.isOpened():
+
+    #각 레벨에 해당하는 토마토 수를 세기 위한 변수
+    harvest_now = 0
+    harvest_soon = 0
+    harvest_after = 0
+
     ret, frame = cap.read()
     if not ret:
         print("프레임을 읽을 수 없습니다. 종료합니다.")
@@ -48,7 +61,14 @@ while cap.isOpened():
                     0.8, (255, 255, 255), 2)  # Draw label
         
 
-  
+        # 각 레벨에 해당하는 토마토 수를 세어 수확가능한 토마토 수를 터미널로 출력
+        if level[1] >= 3 :
+            harvest_now = harvest_now + 1
+        elif level[1] >= 2 :
+            harvest_soon = harvest_soon + 1
+        else : 
+            harvest_after = harvest_after + 1
+        
         
 
     # OpenCV 윈도우에 이미지를 표시
@@ -57,6 +77,12 @@ while cap.isOpened():
     # 'q' 키를 누르면 종료
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
+
+#터미널에 출력
+print("수확 가능한 토마토의 수 : ", harvest_now)
+print("2주후 수확 가능한 토마토 수 : ", harvest_soon )
+print("녹숙기 토마토 수 : ", harvest_after )
+
 
 # 리소스 정리
 cap.release()
